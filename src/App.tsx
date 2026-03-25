@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Search, BookOpen, Maximize2, X, Play, Info, History, LayoutGrid, GraduationCap, Heart } from 'lucide-react';
 import gamesData from './games.json';
@@ -24,6 +24,19 @@ export default function App() {
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [activeCategory, setActiveCategory] = useState('All');
   const [showDonateModal, setShowDonateModal] = useState(false);
+  const gameContainerRef = useRef<HTMLDivElement>(null);
+
+  const toggleFullscreen = () => {
+    if (!gameContainerRef.current) return;
+
+    if (!document.fullscreenElement) {
+      gameContainerRef.current.requestFullscreen().catch((err) => {
+        console.error(`Error attempting to enable fullscreen: ${err.message}`);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  };
 
   const categories = useMemo(() => {
     const cats = ['All', ...new Set(gamesData.map(g => g.category))];
@@ -156,13 +169,20 @@ export default function App() {
                   <button className="p-2 hover:bg-white/10 rounded-lg transition-colors">
                     <Info className="w-5 h-5" />
                   </button>
-                  <button className="p-2 hover:bg-white/10 rounded-lg transition-colors">
+                  <button 
+                    onClick={toggleFullscreen}
+                    className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                    title="Toggle Fullscreen"
+                  >
                     <Maximize2 className="w-5 h-5" />
                   </button>
                 </div>
               </div>
 
-              <div className="aspect-video w-full bg-black rounded-3xl overflow-hidden border border-amber-900/20 shadow-2xl relative group">
+              <div 
+                ref={gameContainerRef}
+                className="aspect-video w-full bg-black rounded-3xl overflow-hidden border border-amber-900/20 shadow-2xl relative group"
+              >
                 <iframe
                   src={selectedGame.url}
                   className="w-full h-full border-none fnae-game-iframe"
