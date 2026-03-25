@@ -1,0 +1,28 @@
+[
+  {
+    "id": "fnae",
+    "title": "Five Nights at Epsteins",
+    "description": "A survival horror parody game set in a mysterious location.",
+    "thumbnail": "https://picsum.photos/seed/fnae/600/400",
+    "url": "https://harshulsilverspoon.github.io/FNAE-HTML5-1.2.3/index.html",
+    "category": "Horror"
+  },
+  {
+    "id": "hist-conquest",
+    "title": "Baldi's Basics",
+    "description": "A meta horror game that's really weird, with no real educational value found...",
+    "thumbnail": "https://picsum.photos/seed/baldi/600/400",
+    "url": "https://html5.gamemonetize.com/iiifrxhcnzl5laslqf3eaedtevjzb2bu/",
+    "category": "Horror"
+  },
+  {
+    "id": "gd-lite",
+    "title": "Geometry Dash Lite",
+    "description": "Jump and fly your way through danger in this rhythm-based action platformer!",
+    "thumbnail": "https://picsum.photos/seed/geometry/600/400",
+    "url": "https://geometry-dash-lite.1games.io/",
+    "category": "Platformer",
+    "allow": "autoplay; fullscreen; camera; focus-without-user-activation *; monetization; gamepad; keyboard-map *; xr-spatial-tracking; clipboard-write; web-share; accelerometer; magnetometer; gyroscope; display-capture",
+    "sandbox": "allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin allow-downloads"
+  }
+]
