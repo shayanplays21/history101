@@ -24,5 +24,15 @@
     "category": "Platformer",
     "allow": "autoplay; fullscreen; camera; focus-without-user-activation *; monetization; gamepad; keyboard-map *; xr-spatial-tracking; clipboard-write; web-share; accelerometer; magnetometer; gyroscope; display-capture",
     "sandbox": "allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin allow-downloads"
+  },
+  {
+    "id": "google-unblocked",
+    "title": "Google Search",
+    "description": "The world's most popular search engine, unblocked for your research needs.",
+    "thumbnail": "https://picsum.photos/seed/google/600/400",
+    "url": "https://www.google.com/search?igu=1",
+    "category": "Browser",
+    "allow": "autoplay; fullscreen; camera; focus-without-user-activation *; monetization; gamepad; keyboard-map *; xr-spatial-tracking; clipboard-write; web-share; accelerometer; magnetometer; gyroscope; display-capture",
+    "sandbox": "allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin allow-downloads"
   }
 ]

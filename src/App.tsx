@@ -5,7 +5,7 @@
 
 import { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, BookOpen, Maximize2, X, Play, Info, History, LayoutGrid, GraduationCap, Heart, Link as LinkIcon, Copy, Share2, Check } from 'lucide-react';
+import { Search, BookOpen, Maximize2, X, Play, Info, History, LayoutGrid, GraduationCap } from 'lucide-react';
 import gamesData from './games.json';
 
 interface Game {
@@ -23,25 +23,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [activeCategory, setActiveCategory] = useState('All');
-  const [showDonateModal, setShowDonateModal] = useState(false);
-  const [showShareModal, setShowShareModal] = useState(false);
-  const [generatedLink, setGeneratedLink] = useState('');
-  const [copied, setCopied] = useState(false);
   const gameContainerRef = useRef<HTMLDivElement>(null);
-
-  const generateLink = () => {
-    const randomHash = Math.random().toString(36).substring(2, 8);
-    const newLink = `https://history101-archives-${randomHash}.netlify.app`;
-    setGeneratedLink(newLink);
-    setCopied(false);
-  };
-
-  const copyToClipboard = () => {
-    if (!generatedLink) return;
-    navigator.clipboard.writeText(generatedLink);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   const toggleFullscreen = () => {
     if (!gameContainerRef.current) return;
@@ -89,13 +71,6 @@ export default function App() {
             </div>
 
             <div className="flex items-center gap-4">
-              <button 
-                onClick={() => { generateLink(); setShowShareModal(true); }}
-                className="hidden sm:flex items-center gap-2 text-amber-100/60 hover:text-amber-100 transition-colors text-xs font-bold uppercase tracking-widest"
-              >
-                <Share2 className="w-4 h-4" />
-                <span>Share</span>
-              </button>
               <div className="relative group hidden sm:block">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-100/40 group-focus-within:text-amber-500 transition-colors" />
                 <input
@@ -106,13 +81,6 @@ export default function App() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              <button 
-                onClick={() => setShowDonateModal(true)}
-                className="flex items-center gap-2 bg-amber-600 hover:bg-amber-500 text-black text-xs font-bold py-2 px-4 rounded-full transition-all shadow-[0_0_15px_rgba(217,119,6,0.2)]"
-              >
-                <Heart className="w-3.5 h-3.5 fill-current" />
-                <span>Donate</span>
-              </button>
             </div>
           </div>
         </div>
@@ -301,131 +269,6 @@ export default function App() {
           </div>
         </div>
       </footer>
-      {/* Donate Modal */}
-      <AnimatePresence>
-        {showDonateModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowDonateModal(false)}
-              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-md bg-[#1a1917] border border-amber-900/20 rounded-3xl p-8 shadow-2xl"
-            >
-              <button 
-                onClick={() => setShowDonateModal(false)}
-                className="absolute top-4 right-4 p-2 hover:bg-white/5 rounded-full transition-colors"
-              >
-                <X className="w-5 h-5 text-amber-100/40" />
-              </button>
-              
-              <div className="text-center">
-                <div className="w-16 h-16 bg-amber-600/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <Heart className="w-8 h-8 text-amber-600 fill-current" />
-                </div>
-                <h3 className="text-2xl font-serif font-black uppercase mb-2">Support the Archives</h3>
-                <p className="text-amber-100/40 text-sm mb-8">
-                  Your contribution helps us maintain and expand our historical simulations for students worldwide.
-                </p>
-                
-                <div className="grid grid-cols-3 gap-3 mb-8">
-                  {['$5', '$10', '$25'].map((amount) => (
-                    <button 
-                      key={amount}
-                      className="py-3 rounded-xl border border-amber-900/20 hover:border-amber-600 hover:bg-amber-600/5 transition-all font-bold text-amber-100"
-                    >
-                      {amount}
-                    </button>
-                  ))}
-                </div>
-                
-                <button 
-                  onClick={() => setShowDonateModal(false)}
-                  className="w-full bg-amber-600 hover:bg-amber-500 text-black font-bold py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(217,119,6,0.3)]"
-                >
-                  Continue to Payment
-                </button>
-                
-                <p className="mt-6 text-[10px] uppercase tracking-widest text-amber-100/20 font-bold">
-                  Secure transaction powered by History101
-                </p>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* Share Modal */}
-      <AnimatePresence>
-        {showShareModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowShareModal(false)}
-              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-md bg-[#1a1917] border border-amber-900/20 rounded-3xl p-8 shadow-2xl"
-            >
-              <button 
-                onClick={() => setShowShareModal(false)}
-                className="absolute top-4 right-4 p-2 hover:bg-white/5 rounded-full transition-colors"
-              >
-                <X className="w-5 h-5 text-amber-100/40" />
-              </button>
-              
-              <div className="text-center">
-                <div className="w-16 h-16 bg-amber-600/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <LinkIcon className="w-8 h-8 text-amber-600" />
-                </div>
-                <h3 className="text-2xl font-serif font-black uppercase mb-2">Deploy & Share</h3>
-                <p className="text-amber-100/40 text-sm mb-4">
-                  Generate a unique Netlify preview link for your current archive session.
-                </p>
-                <div className="mb-6 p-3 bg-amber-600/10 border border-amber-600/20 rounded-xl text-[10px] text-amber-500 uppercase tracking-widest font-bold">
-                  Note: This is a simulation. To use this link, you must deploy your project to Netlify.
-                </div>
-                
-                <div className="bg-black/40 border border-amber-900/20 rounded-xl p-4 mb-6 flex items-center justify-between gap-3">
-                  <code className="text-xs text-amber-500 font-mono truncate">
-                    {generatedLink || 'Click generate to start...'}
-                  </code>
-                  <button 
-                    onClick={copyToClipboard}
-                    disabled={!generatedLink}
-                    className="shrink-0 p-2 hover:bg-white/5 rounded-lg transition-colors disabled:opacity-20"
-                  >
-                    {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4 text-amber-100/40" />}
-                  </button>
-                </div>
-                
-                <button 
-                  onClick={generateLink}
-                  className="w-full bg-amber-600 hover:bg-amber-500 text-black font-bold py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(217,119,6,0.3)] flex items-center justify-center gap-2"
-                >
-                  <Share2 className="w-4 h-4" />
-                  Generate Random Link
-                </button>
-                
-                <p className="mt-6 text-[10px] uppercase tracking-widest text-amber-100/20 font-bold">
-                  Ready for Netlify deployment
-                </p>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
