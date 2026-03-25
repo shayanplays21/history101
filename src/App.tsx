@@ -24,33 +24,6 @@ export default function App() {
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [activeCategory, setActiveCategory] = useState('All');
   const [showDonateModal, setShowDonateModal] = useState(false);
-  const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
-
-  const handleDonate = async () => {
-    if (!selectedAmount) return;
-    
-    setIsProcessing(true);
-    try {
-      const response = await fetch('/api/create-checkout-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: selectedAmount }),
-      });
-
-      const data = await response.json();
-      if (data.url) {
-        window.location.href = data.url; // Redirect to Stripe Checkout
-      } else {
-        throw new Error(data.error || 'Failed to create checkout session');
-      }
-    } catch (error) {
-      console.error('Payment Error:', error);
-      alert('Payment failed. Please ensure your Stripe keys are configured in the environment.');
-    } finally {
-      setIsProcessing(false);
-    }
-  };
 
   const categories = useMemo(() => {
     const cats = ['All', ...new Set(gamesData.map(g => g.category))];
@@ -318,27 +291,21 @@ export default function App() {
                 </p>
                 
                 <div className="grid grid-cols-3 gap-3 mb-8">
-                  {[5, 10, 25].map((amount) => (
+                  {['$5', '$10', '$25'].map((amount) => (
                     <button 
                       key={amount}
-                      onClick={() => setSelectedAmount(amount)}
-                      className={`py-3 rounded-xl border transition-all font-bold ${
-                        selectedAmount === amount 
-                          ? 'border-amber-600 bg-amber-600/20 text-amber-100' 
-                          : 'border-amber-900/20 hover:border-amber-600 hover:bg-amber-600/5 text-amber-100/60'
-                      }`}
+                      className="py-3 rounded-xl border border-amber-900/20 hover:border-amber-600 hover:bg-amber-600/5 transition-all font-bold text-amber-100"
                     >
-                      ${amount}
+                      {amount}
                     </button>
                   ))}
                 </div>
                 
                 <button 
-                  onClick={handleDonate}
-                  disabled={!selectedAmount || isProcessing}
-                  className={`w-full bg-amber-600 hover:bg-amber-500 text-black font-bold py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(217,119,6,0.3)] disabled:opacity-50 disabled:cursor-not-allowed`}
+                  onClick={() => setShowDonateModal(false)}
+                  className="w-full bg-amber-600 hover:bg-amber-500 text-black font-bold py-4 rounded-xl transition-all shadow-[0_0_20px_rgba(217,119,6,0.3)]"
                 >
-                  {isProcessing ? 'Processing...' : 'Continue to Payment'}
+                  Continue to Payment
                 </button>
                 
                 <p className="mt-6 text-[10px] uppercase tracking-widest text-amber-100/20 font-bold">
